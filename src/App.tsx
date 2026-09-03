@@ -28,6 +28,8 @@ import { ChallengesPanel } from './components/panels/ChallengesPanel'
 import { CalendarPanel } from './components/panels/CalendarPanel'
 import { LeaderboardPanel } from './components/panels/LeaderboardPanel'
 import { StorePanel } from './components/panels/StorePanel'
+import { CommunityPanel } from './components/panels/CommunityPanel'
+import { ProfilePanel } from './components/panels/ProfilePanel'
 
 /** The portal ships the hybrid rail/coverflow stage. */
 const MODE: StageMode = 'hybrid'
@@ -166,7 +168,8 @@ export function App() {
             )}
             {name === 'Leaderboard' && <LeaderboardPanel program={program} />}
             {name === 'Store' && <StorePanel program={program} />}
-            {/* Remaining panels land in subsequent changes. */}
+            {name === 'Community' && <CommunityPanel program={program} />}
+            {name === 'Profile' && <ProfilePanel program={program} />}
           </Panel>
         ))}
       </div>

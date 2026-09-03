@@ -614,3 +614,14 @@ export const MONTH_NAMES = [
   'November',
   'December',
 ] as const
+
+/**
+ * The tier a point total falls in.
+ *
+ * Tier is a function of points, so deriving it keeps the ladder and the
+ * viewer's badge from ever disagreeing.
+ */
+export function tierFor(points: number): Tier {
+  // Walk down from the top; the first threshold cleared is the tier.
+  return [...TIER_LADDER].reverse().find((tier) => points >= tier.threshold) ?? TIER_LADDER[0]!
+}

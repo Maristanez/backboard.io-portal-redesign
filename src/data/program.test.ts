@@ -11,6 +11,7 @@ import {
   STORE_ITEMS,
   TIER_LADDER,
   VIEWER,
+  tierFor,
   WEEKLY_POINTS,
 } from './program'
 
@@ -103,5 +104,20 @@ describe('program data', () => {
     for (const item of CHECKLIST) {
       expect(PANELS).toContain(item.target)
     }
+  })
+})
+
+describe('tierFor', () => {
+  it('places a total in the highest tier it clears', () => {
+    expect(tierFor(0).name).toBe('Rookie')
+    expect(tierFor(999).name).toBe('Rookie')
+    expect(tierFor(1000).name).toBe('Captain')
+    expect(tierFor(3000).name).toBe('Legend')
+    expect(tierFor(7500).name).toBe('Founder')
+    expect(tierFor(99999).name).toBe('Founder')
+  })
+
+  it('agrees with the tier the viewer is labelled with', () => {
+    expect(tierFor(VIEWER.points).name.toUpperCase()).toBe(VIEWER.tier)
   })
 })

@@ -16,11 +16,14 @@ import { PANELS } from './domain/types'
 import { VIEWER } from './data/program'
 import { useCountUp } from './hooks/useCountUp'
 import { usePanelNavigation } from './navigation/usePanelNavigation'
+import { useProgramState } from './state/useProgramState'
 import { Background } from './components/shell/Background'
 import { DeckTitles, StageIndicator } from './components/shell/StageIndicator'
 import { EdgeArrows } from './components/shell/EdgeArrows'
 import { Header } from './components/shell/Header'
 import { Panel } from './components/shell/Panel'
+import { HomePanel } from './components/panels/HomePanel'
+import { SubmitPanel } from './components/panels/SubmitPanel'
 
 /** The portal ships the hybrid rail/coverflow stage. */
 const MODE: StageMode = 'hybrid'
@@ -34,6 +37,8 @@ const COMPACT_WIDTH = 1200
 export function App() {
   const [paletteOpen, setPaletteOpen] = useState(false)
   const [drawer, setDrawer] = useState<'notifications' | 'settings' | null>(null)
+
+  const program = useProgramState()
 
   const nav = usePanelNavigation({
     paused: paletteOpen || drawer !== null,
@@ -70,6 +75,7 @@ export function App() {
   )
 
   const points = useCountUp(VIEWER.points, 1400, reducedMotion)
+  const goToPanel = (name: (typeof PANELS)[number]) => nav.goTo(PANELS.indexOf(name))
   const ringDash = `${(points / 1000) * RING_CIRCUMFERENCE} ${RING_CIRCUMFERENCE}`
 
   return (
@@ -137,7 +143,11 @@ export function App() {
               if (!nav.isSettlingDrag() && i !== index) nav.goTo(i)
             }}
           >
-            {/* Panel content lands in subsequent changes. */}
+            {name === 'Home' && (
+              <HomePanel program={program} points={points} onNavigate={goToPanel} />
+            )}
+            {name === 'Submit' && <SubmitPanel program={program} />}
+            {/* Remaining panels land in subsequent changes. */}
           </Panel>
         ))}
       </div>

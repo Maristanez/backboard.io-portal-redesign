@@ -1,0 +1,100 @@
+/*
+ * Global shell styles. Ported from the `<helmet>` block of the
+ * `D-Rail-Coverflow v3` design canvas so the runtime baseline matches the source.
+ */
+html,
+body {
+  margin: 0;
+  height: 100%;
+  background: #06080c;
+  color: #e6ebf3;
+  font-family: 'IBM Plex Sans', system-ui, sans-serif;
+  overscroll-behavior-x: none;
+  overflow: hidden;
+}
+
+#root {
+  height: 100%;
+}
+
+a {
+  color: #4d9bff;
+  text-decoration: none;
+}
+a:hover {
+  color: #8ec0ff;
+}
+
+input,
+textarea,
+button {
+  font-family: inherit;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #4a5566;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(120, 150, 200, 0.25) transparent;
+}
+*::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+*::-webkit-scrollbar-thumb {
+  background: rgba(120, 150, 200, 0.22);
+  border-radius: 3px;
+}
+
+@keyframes bbPulse {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+@keyframes bbEnterA {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes bbEnterB {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes bbFeedIn {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

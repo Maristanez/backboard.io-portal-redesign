@@ -26,6 +26,8 @@ import { HomePanel } from './components/panels/HomePanel'
 import { SubmitPanel } from './components/panels/SubmitPanel'
 import { ChallengesPanel } from './components/panels/ChallengesPanel'
 import { CalendarPanel } from './components/panels/CalendarPanel'
+import { LeaderboardPanel } from './components/panels/LeaderboardPanel'
+import { StorePanel } from './components/panels/StorePanel'
 
 /** The portal ships the hybrid rail/coverflow stage. */
 const MODE: StageMode = 'hybrid'
@@ -162,6 +164,8 @@ export function App() {
                 onSubmitEvent={() => program.showToast('Event submission opens with the overlays.')}
               />
             )}
+            {name === 'Leaderboard' && <LeaderboardPanel program={program} />}
+            {name === 'Store' && <StorePanel program={program} />}
             {/* Remaining panels land in subsequent changes. */}
           </Panel>
         ))}

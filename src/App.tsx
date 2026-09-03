@@ -24,6 +24,8 @@ import { Header } from './components/shell/Header'
 import { Panel } from './components/shell/Panel'
 import { HomePanel } from './components/panels/HomePanel'
 import { SubmitPanel } from './components/panels/SubmitPanel'
+import { ChallengesPanel } from './components/panels/ChallengesPanel'
+import { CalendarPanel } from './components/panels/CalendarPanel'
 
 /** The portal ships the hybrid rail/coverflow stage. */
 const MODE: StageMode = 'hybrid'
@@ -147,6 +149,19 @@ export function App() {
               <HomePanel program={program} points={points} onNavigate={goToPanel} />
             )}
             {name === 'Submit' && <SubmitPanel program={program} />}
+            {name === 'Challenges' && (
+              <ChallengesPanel
+                program={program}
+                // Swapped for a confirmation overlay when overlays land.
+                onApply={(challengeIndex) => program.applyToChallenge(challengeIndex)}
+              />
+            )}
+            {name === 'Calendar' && (
+              <CalendarPanel
+                onOpenEvent={() => program.showToast('Event details open with the overlays.')}
+                onSubmitEvent={() => program.showToast('Event submission opens with the overlays.')}
+              />
+            )}
             {/* Remaining panels land in subsequent changes. */}
           </Panel>
         ))}

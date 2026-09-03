@@ -1,0 +1,81 @@
+/*
+ * Hover and focus states.
+ *
+ * The design canvas expresses these with a `style-hover` attribute its runtime
+ * understands. Plain React has no equivalent, and inline styles can't carry a
+ * pseudo-class, so the hover rules live here as classes instead.
+ */
+
+/* Cards that lift on hover: "do next" tiles, resource links. */
+.bb-lift {
+  transition: all 0.3s;
+}
+.bb-lift:hover {
+  border-color: rgba(77, 155, 255, 0.5);
+  background: rgba(30, 124, 242, 0.07);
+  transform: translateY(-2px);
+}
+
+/* Rows that only brighten their border: challenge, opportunity, member cards. */
+.bb-row {
+  transition: border-color 0.3s, background 0.3s;
+}
+.bb-row:hover {
+  border-color: rgba(77, 155, 255, 0.4);
+  background: rgba(30, 124, 242, 0.05);
+}
+
+/* The header's jump-to-panel button. */
+.bb-jump {
+  transition: border-color 0.3s, color 0.3s;
+}
+.bb-jump:hover {
+  border-color: rgba(77, 155, 255, 0.4);
+  color: #eef2f8;
+}
+
+/* Circular edge arrows either side of the stage. */
+.bb-arrow {
+  transition: opacity 0.4s, border-color 0.3s, box-shadow 0.3s;
+}
+.bb-arrow:hover {
+  border-color: rgba(77, 155, 255, 0.6);
+  box-shadow: 0 0 24px rgba(30, 124, 242, 0.35);
+}
+
+/* Filled primary actions. */
+.bb-primary {
+  transition: background 0.3s;
+}
+.bb-primary:hover {
+  background: #3b8ff7;
+}
+
+/* Outlined secondary actions. */
+.bb-secondary {
+  transition: border-color 0.3s, color 0.3s;
+}
+.bb-secondary:hover {
+  border-color: rgba(77, 155, 255, 0.5);
+}
+
+/* Command palette results. */
+.bb-pal-item:hover {
+  background: rgba(30, 124, 242, 0.14) !important;
+}
+
+/* Keyboard focus. Inline styles strip the default ring, so put one back. */
+.bb-lift:focus-visible,
+.bb-row:focus-visible,
+.bb-jump:focus-visible,
+.bb-arrow:focus-visible,
+.bb-primary:focus-visible,
+.bb-secondary:focus-visible,
+.bb-pal-item:focus-visible,
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid #4d9bff;
+  outline-offset: 2px;
+}

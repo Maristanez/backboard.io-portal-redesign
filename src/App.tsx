@@ -12,7 +12,7 @@ import {
   type StageMode,
 } from './coverflow/geometry'
 import { color } from './design/tokens'
-import { PANELS } from './domain/types'
+import { PANELS, type CalendarEvent, type PaletteTarget } from './domain/types'
 import { VIEWER } from './data/program'
 import { useCountUp } from './hooks/useCountUp'
 import { usePanelNavigation } from './navigation/usePanelNavigation'
@@ -30,6 +30,20 @@ import { LeaderboardPanel } from './components/panels/LeaderboardPanel'
 import { StorePanel } from './components/panels/StorePanel'
 import { CommunityPanel } from './components/panels/CommunityPanel'
 import { ProfilePanel } from './components/panels/ProfilePanel'
+import {
+  ApplyOverlay,
+  EventOverlay,
+  SubmitEventOverlay,
+} from './components/overlays/ChallengeOverlays'
+import { NotificationsDrawer, SettingsDrawer } from './components/overlays/Drawers'
+import { CommandPalette } from './components/overlays/CommandPalette'
+import { Toast } from './components/overlays/Toast'
+
+/** The modal currently over the stage, if any. */
+type Overlay =
+  | { kind: 'apply'; index: number; title: string }
+  | { kind: 'event'; event: CalendarEvent }
+  | { kind: 'submit-event' }
 
 /** The portal ships the hybrid rail/coverflow stage. */
 const MODE: StageMode = 'hybrid'
@@ -43,15 +57,19 @@ const COMPACT_WIDTH = 1200
 export function App() {
   const [paletteOpen, setPaletteOpen] = useState(false)
   const [drawer, setDrawer] = useState<'notifications' | 'settings' | null>(null)
+  /** At most one modal is open at a time, so it's one piece of state. */
+  const [overlay, setOverlay] = useState<Overlay | null>(null)
 
   const program = useProgramState()
 
   const nav = usePanelNavigation({
-    paused: paletteOpen || drawer !== null,
+    // Gestures stand down while any layer is over the stage.
+    paused: paletteOpen || drawer !== null || overlay !== null,
     onTogglePalette: () => setPaletteOpen((open) => !open),
     onDismiss: () => {
       setPaletteOpen(false)
       setDrawer(null)
+      setOverlay(null)
     },
   })
 
@@ -82,6 +100,13 @@ export function App() {
 
   const points = useCountUp(VIEWER.points, 1400, reducedMotion)
   const goToPanel = (name: (typeof PANELS)[number]) => nav.goTo(PANELS.indexOf(name))
+
+  /** Palette jumps set the destination tab before moving, so it lands ready. */
+  const jumpTo = (target: PaletteTarget) => {
+    // The union guarantees a `tab` only appears on a panel that has tabs.
+    if (target.tab) program.selectTab(target.panel, target.tab)
+    goToPanel(target.panel)
+  }
   const ringDash = `${(points / 1000) * RING_CIRCUMFERENCE} ${RING_CIRCUMFERENCE}`
 
   return (
@@ -157,13 +182,13 @@ export function App() {
               <ChallengesPanel
                 program={program}
                 // Swapped for a confirmation overlay when overlays land.
-                onApply={(challengeIndex) => program.applyToChallenge(challengeIndex)}
+                onApply={(index, title) => setOverlay({ kind: 'apply', index, title })}
               />
             )}
             {name === 'Calendar' && (
               <CalendarPanel
-                onOpenEvent={() => program.showToast('Event details open with the overlays.')}
-                onSubmitEvent={() => program.showToast('Event submission opens with the overlays.')}
+                onOpenEvent={(event) => setOverlay({ kind: 'event', event })}
+                onSubmitEvent={() => setOverlay({ kind: 'submit-event' })}
               />
             )}
             {name === 'Leaderboard' && <LeaderboardPanel program={program} />}
@@ -176,6 +201,43 @@ export function App() {
 
       <StageIndicator mode={MODE} index={index} onGoTo={nav.goTo} />
       <EdgeArrows index={index} panelCount={PANELS.length} onStep={nav.step} />
+
+      <NotificationsDrawer
+        open={drawer === 'notifications'}
+        onClose={() => setDrawer(null)}
+      />
+      <SettingsDrawer
+        open={drawer === 'settings'}
+        onClose={() => setDrawer(null)}
+        preferences={program.preferences}
+        onToggle={program.togglePreference}
+      />
+
+      {overlay?.kind === 'apply' && (
+        <ApplyOverlay
+          title={overlay.title}
+          onClose={() => setOverlay(null)}
+          onConfirm={() => {
+            program.applyToChallenge(overlay.index)
+            setOverlay(null)
+          }}
+        />
+      )}
+      {overlay?.kind === 'event' && (
+        <EventOverlay event={overlay.event} onClose={() => setOverlay(null)} />
+      )}
+      {overlay?.kind === 'submit-event' && (
+        <SubmitEventOverlay onClose={() => setOverlay(null)} />
+      )}
+
+      {paletteOpen && (
+        <CommandPalette
+          onClose={() => setPaletteOpen(false)}
+          onJump={jumpTo}
+        />
+      )}
+
+      {program.toast && <Toast message={program.toast} />}
     </div>
   )
 }

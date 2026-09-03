@@ -234,10 +234,15 @@ export interface CategoryBreakdown {
   percent: number
 }
 
-/** A command palette destination — a panel, optionally deep-linked to a tab. */
-export interface PaletteTarget {
-  label: string
-  hint: string
-  panel: PanelName
-  tab?: AnyTab
-}
+/**
+ * A command palette destination — a panel, optionally deep-linked to a tab.
+ *
+ * Modelled as a union so that carrying a `tab` proves the `panel` is one that
+ * has tabs. That's what lets the palette hand a target straight to
+ * `selectTab` without a cast, and makes a mismatched pair a compile error.
+ */
+export type PaletteTarget =
+  | { label: string; hint: string; panel: PanelName; tab?: undefined }
+  | {
+      [P in TabbedPanel]: { label: string; hint: string; panel: P; tab: TabOf<P> }
+    }[TabbedPanel]

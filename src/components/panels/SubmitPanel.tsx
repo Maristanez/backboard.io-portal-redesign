@@ -6,7 +6,7 @@
  * full range of what's worth points.
  */
 import { border, brandFill, color, font, kicker } from '../../design/tokens'
-import { EARN_OPTIONS } from '../../data/program'
+import { EARN_OPTIONS } from '../../data'
 import { EARN_CATEGORIES, type EarnCategory } from '../../domain/types'
 import type { ProgramState } from '../../state/useProgramState'
 import { PanelBody } from '../shell/Panel'

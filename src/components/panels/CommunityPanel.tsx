@@ -7,7 +7,7 @@
 import { useState } from 'react'
 
 import { border, color, font } from '../../design/tokens'
-import { MEMBERS, OPPORTUNITIES, RESOURCES } from '../../data/program'
+import { MEMBERS, OPPORTUNITIES, RESOURCES } from '../../data'
 import { PANEL_TABS, type TabOf } from '../../domain/types'
 import type { ProgramState } from '../../state/useProgramState'
 import { PanelBody } from '../shell/Panel'

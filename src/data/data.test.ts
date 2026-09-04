@@ -13,7 +13,7 @@ import {
   VIEWER,
   tierFor,
   WEEKLY_POINTS,
-} from './program'
+} from '.'
 
 describe('program data', () => {
   it('has eight panels, matching the keys 1-8 shortcut range', () => {

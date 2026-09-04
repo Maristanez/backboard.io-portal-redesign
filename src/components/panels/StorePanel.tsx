@@ -6,7 +6,7 @@
  * design distinguishes them rather than greying everything out alike.
  */
 import { border, color, font, kicker } from '../../design/tokens'
-import { STORE_ITEMS, VIEWER } from '../../data/program'
+import { STORE_ITEMS, VIEWER } from '../../data'
 import { PANEL_TABS, type TabOf } from '../../domain/types'
 import type { ProgramState } from '../../state/useProgramState'
 import { PanelBody } from '../shell/Panel'

@@ -13,7 +13,7 @@ import {
   VIEWER,
   WEEKLY_POINTS,
   tierFor,
-} from '../../data/program'
+} from '../../data'
 import { PANEL_TABS, type TabOf } from '../../domain/types'
 import type { ProgramState } from '../../state/useProgramState'
 import { PanelBody } from '../shell/Panel'

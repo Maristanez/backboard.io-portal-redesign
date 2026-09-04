@@ -8,15 +8,15 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import type { PointerEvent as ReactPointerEvent, WheelEvent as ReactWheelEvent } from 'react'
 
 import { PANELS } from '../domain/types'
-import { resolveDragCommit, resolveDragIntent, smoothVelocity } from './gestures'
-import { resolveKeyAction } from './keyboard'
+import { resolveDragCommit, resolveDragIntent, smoothVelocity } from './internal/gestures'
+import { resolveKeyAction } from './internal/keyboard'
 import {
   advanceWheel,
   canScrollVertically,
   initialWheelState,
   resolveWheelDelta,
   type WheelState,
-} from './wheel'
+} from './internal/wheel'
 
 const STORAGE_KEY = 'bb.portal.panel'
 

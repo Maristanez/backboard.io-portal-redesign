@@ -5,7 +5,7 @@
  * of the field reads at a glance even early in a semester.
  */
 import { border, brandFill, color, font } from '../../design/tokens'
-import { LEADERS, TEAMS, VIEWER } from '../../data/program'
+import { LEADERS, TEAMS, VIEWER } from '../../data'
 import { PANEL_TABS, type TabOf } from '../../domain/types'
 import type { ProgramState } from '../../state/useProgramState'
 import { PanelBody } from '../shell/Panel'

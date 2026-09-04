@@ -13,23 +13,16 @@ import {
 } from './coverflow/geometry'
 import { color } from './design/tokens'
 import { PANELS, type CalendarEvent, type PaletteTarget } from './domain/types'
-import { VIEWER } from './data/program'
+import { VIEWER } from './data'
 import { useCountUp } from './hooks/useCountUp'
-import { usePanelNavigation } from './navigation/usePanelNavigation'
+import { usePanelNavigation } from './navigation'
 import { useProgramState } from './state/useProgramState'
 import { Background } from './components/shell/Background'
 import { DeckTitles, StageIndicator } from './components/shell/StageIndicator'
 import { EdgeArrows } from './components/shell/EdgeArrows'
 import { Header } from './components/shell/Header'
 import { Panel } from './components/shell/Panel'
-import { HomePanel } from './components/panels/HomePanel'
-import { SubmitPanel } from './components/panels/SubmitPanel'
-import { ChallengesPanel } from './components/panels/ChallengesPanel'
-import { CalendarPanel } from './components/panels/CalendarPanel'
-import { LeaderboardPanel } from './components/panels/LeaderboardPanel'
-import { StorePanel } from './components/panels/StorePanel'
-import { CommunityPanel } from './components/panels/CommunityPanel'
-import { ProfilePanel } from './components/panels/ProfilePanel'
+import { PANEL_VIEWS } from './components/panels/registry'
 import {
   ApplyOverlay,
   EventOverlay,
@@ -174,27 +167,15 @@ export function App() {
               if (!nav.isSettlingDrag() && i !== index) nav.goTo(i)
             }}
           >
-            {name === 'Home' && (
-              <HomePanel program={program} points={points} onNavigate={goToPanel} />
-            )}
-            {name === 'Submit' && <SubmitPanel program={program} />}
-            {name === 'Challenges' && (
-              <ChallengesPanel
-                program={program}
-                // Swapped for a confirmation overlay when overlays land.
-                onApply={(index, title) => setOverlay({ kind: 'apply', index, title })}
-              />
-            )}
-            {name === 'Calendar' && (
-              <CalendarPanel
-                onOpenEvent={(event) => setOverlay({ kind: 'event', event })}
-                onSubmitEvent={() => setOverlay({ kind: 'submit-event' })}
-              />
-            )}
-            {name === 'Leaderboard' && <LeaderboardPanel program={program} />}
-            {name === 'Store' && <StorePanel program={program} />}
-            {name === 'Community' && <CommunityPanel program={program} />}
-            {name === 'Profile' && <ProfilePanel program={program} />}
+            {PANEL_VIEWS[name]({
+              program,
+              points,
+              onNavigate: goToPanel,
+              onApplyToChallenge: (challengeIndex, title) =>
+                setOverlay({ kind: 'apply', index: challengeIndex, title }),
+              onOpenEvent: (event) => setOverlay({ kind: 'event', event }),
+              onSubmitEvent: () => setOverlay({ kind: 'submit-event' }),
+            })}
           </Panel>
         ))}
       </div>

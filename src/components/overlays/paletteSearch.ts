@@ -1,5 +1,5 @@
 /** Command palette search. */
-import type { PaletteTarget } from '../domain/types'
+import type { PaletteTarget } from '../../domain/types'
 
 /**
  * Palette entries matching a query.

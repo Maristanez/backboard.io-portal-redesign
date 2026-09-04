@@ -7,9 +7,9 @@
 import { useEffect, useRef, useState } from 'react'
 
 import { border, brandFill, color, font, shadow, z } from '../../design/tokens'
-import { PALETTE_TARGETS } from '../../data/program'
+import { PALETTE_TARGETS } from '../../data'
 import { PANELS, type PaletteTarget } from '../../domain/types'
-import { filterPaletteTargets } from '../../navigation/palette'
+import { filterPaletteTargets } from './paletteSearch'
 
 interface CommandPaletteProps {
   onClose: () => void

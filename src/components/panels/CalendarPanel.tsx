@@ -8,7 +8,7 @@ import { useState } from 'react'
 
 import { buildMonthGrid, shiftMonth } from '../../calendar/month'
 import { border, brandFill, color, font, kicker } from '../../design/tokens'
-import { CALENDAR_EVENTS, DAYS_OF_WEEK, MONTH_NAMES, TODAY } from '../../data/program'
+import { CALENDAR_EVENTS, DAYS_OF_WEEK, MONTH_NAMES, TODAY } from '../../data'
 import type { CalendarEvent } from '../../domain/types'
 import { PanelBody } from '../shell/Panel'
 import { Button, PanelHeading } from '../ui'

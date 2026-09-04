@@ -17,7 +17,7 @@ import {
   INITIAL_PREFERENCES,
   INITIAL_SUBMISSIONS,
   EARN_OPTIONS,
-} from '../data/program'
+} from '../data'
 import type {
   ChecklistStep,
   EarnCategory,

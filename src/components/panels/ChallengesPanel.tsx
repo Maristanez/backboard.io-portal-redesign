@@ -5,7 +5,7 @@
  * price. The button reflects where a claim stands: open, under review, or done.
  */
 import { border, color, font } from '../../design/tokens'
-import { CHALLENGES } from '../../data/program'
+import { CHALLENGES } from '../../data'
 import type { ReviewStatus } from '../../domain/types'
 import type { ProgramState } from '../../state/useProgramState'
 import { PanelBody } from '../shell/Panel'

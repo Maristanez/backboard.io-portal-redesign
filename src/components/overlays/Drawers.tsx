@@ -5,7 +5,7 @@
  * the animation runs in both directions.
  */
 import { border, color, font, layout, z } from '../../design/tokens'
-import { NOTIFICATIONS, PREFERENCES } from '../../data/program'
+import { NOTIFICATIONS, PREFERENCES } from '../../data'
 import type { PreferenceKey } from '../../domain/types'
 
 function drawerStyle(open: boolean) {

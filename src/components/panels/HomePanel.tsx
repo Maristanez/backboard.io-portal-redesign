@@ -5,7 +5,7 @@
  * still outstanding, and what the rest of the program is up to.
  */
 import { border, color, font, kicker } from '../../design/tokens'
-import { CHECKLIST, NEXT_TIER, VIEWER } from '../../data/program'
+import { CHECKLIST, NEXT_TIER, VIEWER } from '../../data'
 import type { PanelName } from '../../domain/types'
 import type { ProgramState } from '../../state/useProgramState'
 import { PanelBody } from '../shell/Panel'

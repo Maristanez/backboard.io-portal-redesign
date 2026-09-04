@@ -1,5 +1,5 @@
 /** Keyboard routing for the panel rail. */
-import { PANELS } from '../domain/types'
+import { PANELS } from '../../domain/types'
 
 export type KeyAction =
   | { type: 'toggle-palette' }

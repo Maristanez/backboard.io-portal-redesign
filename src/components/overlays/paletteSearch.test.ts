@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 
-import { filterPaletteTargets } from './palette'
-import { PALETTE_TARGETS } from '../data/program'
+import { filterPaletteTargets } from './paletteSearch'
+import { PALETTE_TARGETS } from '../../data'
 
 describe('filterPaletteTargets', () => {
   it('returns everything for an empty query', () => {

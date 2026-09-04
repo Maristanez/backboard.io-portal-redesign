@@ -9,7 +9,7 @@
 import type { StageMode } from '../../coverflow/geometry'
 import { border, brandFill, color, font, layout, shadow, z } from '../../design/tokens'
 import { PANELS } from '../../domain/types'
-import { VIEWER } from '../../data/program'
+import { VIEWER } from '../../data'
 import { BellIcon, GearIcon, SearchIcon } from './icons'
 
 interface HeaderProps {

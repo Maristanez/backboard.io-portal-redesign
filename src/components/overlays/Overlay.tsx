@@ -6,7 +6,7 @@
  */
 import { useEffect, useRef, type ReactNode } from 'react'
 
-import { border, color, shadow, z } from '../../design/tokens'
+import { color, shadow, z } from '../../design/tokens'
 
 interface OverlayProps {
   onClose: () => void
@@ -63,12 +63,5 @@ export function Overlay({ onClose, children, label }: OverlayProps) {
   )
 }
 
-export const overlayField = {
-  padding: '13px 14px',
-  borderRadius: 8,
-  border: `1px solid ${border.strong}`,
-  background: color.field,
-  color: color.text,
-  fontSize: 14,
-  outline: 'none',
-} as const
+/** Re-exported so overlay code has one obvious import for its inputs. */
+export { fieldStyle as overlayField } from '../ui'

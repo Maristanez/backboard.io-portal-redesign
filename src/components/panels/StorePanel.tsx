@@ -9,7 +9,8 @@ import { border, color, font, kicker } from '../../design/tokens'
 import { STORE_ITEMS, VIEWER } from '../../data/program'
 import { PANEL_TABS, type TabOf } from '../../domain/types'
 import type { ProgramState } from '../../state/useProgramState'
-import { PanelBody, PanelHeader } from '../shell/Panel'
+import { PanelBody } from '../shell/Panel'
+import { Button, EmptyState, PanelHeading, Stat, Unit } from '../ui'
 import { PanelTabs, TabPanel } from '../shell/PanelTabs'
 
 /** Tier the viewer has reached; items above it are locked. */
@@ -30,38 +31,27 @@ export function StorePanel({ program }: { program: ProgramState }) {
       />
 
       <TabPanel active={active === 'Redeem'}>
-        <PanelHeader
-          style={{
-            padding: '18px 44px 20px',
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'flex-end',
-          }}
-        >
-          <div>
-            <div style={{ ...kicker(10, '.24em'), color: color.accent, marginBottom: 12 }}>
-              06 · PROGRAM
+        <PanelHeading
+          index={6}
+          section="PROGRAM"
+          title="Store"
+          description="Redeem points. Tiers unlock with rank; orders are approved by an admin."
+          underTabs
+          aside={
+            <div style={{ textAlign: 'right' }}>
+              <Stat
+                label="SPENDABLE"
+                size="hero"
+                accent
+                value={
+                  <>
+                    {VIEWER.points} <Unit size={16}>PTS</Unit>
+                  </>
+                }
+              />
             </div>
-            <h1 style={{ margin: 0, font: `600 52px/1 ${font.display}`, color: color.textBright }}>
-              Store
-            </h1>
-            <p style={{ margin: '10px 0 0', fontSize: 15, color: color.textMuted }}>
-              Redeem points. Tiers unlock with rank; orders are approved by an admin.
-            </p>
-          </div>
-          <div style={{ textAlign: 'right' }}>
-            <div style={kicker()}>SPENDABLE</div>
-            <div
-              style={{
-                font: `600 40px/1 ${font.display}`,
-                color: color.accentSoft,
-                marginTop: 8,
-              }}
-            >
-              {VIEWER.points} <span style={{ fontSize: 16, color: color.textFaint }}>PTS</span>
-            </div>
-          </div>
-        </PanelHeader>
+          }
+        />
 
         <PanelBody style={{ display: 'flex', flexDirection: 'column', gap: 26 }}>
           <div
@@ -132,24 +122,14 @@ export function StorePanel({ program }: { program: ProgramState }) {
                     <span style={{ font: `600 14px/1 ${font.mono}`, color: color.accentSoft }}>
                       {item.cost.toLocaleString()} PTS
                     </span>
-                    <button
-                      onClick={() =>
-                        actionable && program.redeem(i, { name: item.name, cost: item.cost })
-                      }
+                    <Button
+                      small
+                      onClick={() => program.redeem(i, { name: item.name, cost: item.cost })}
                       disabled={!actionable}
-                      style={{
-                        border: `1px solid ${actionable ? color.brand : border.strong}`,
-                        cursor: actionable ? 'pointer' : 'default',
-                        padding: '9px 14px',
-                        borderRadius: 6,
-                        background: actionable ? color.brand : 'transparent',
-                        color: actionable ? '#fff' : color.textFaint,
-                        font: `600 12px/1 ${font.sans}`,
-                        whiteSpace: 'nowrap',
-                      }}
+                      style={{ borderRadius: 6 }}
                     >
                       {label}
-                    </button>
+                    </Button>
                   </div>
                 </div>
               )
@@ -175,9 +155,7 @@ export function StorePanel({ program }: { program: ProgramState }) {
               </span>
             </div>
             {orders.length === 0 ? (
-              <div style={{ padding: 36, textAlign: 'center', fontSize: 14, color: color.textFaint }}>
-                No orders yet. Redeem something above.
-              </div>
+              <EmptyState>No orders yet. Redeem something above.</EmptyState>
             ) : (
               orders.map((order) => (
                 <div
@@ -210,52 +188,15 @@ export function StorePanel({ program }: { program: ProgramState }) {
       </TabPanel>
 
       <TabPanel active={active === 'Referrals'}>
-        <PanelHeader
-          style={{
-            padding: '18px 44px 20px',
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'flex-end',
-          }}
-        >
-          <div>
-            <div style={{ ...kicker(10, '.24em'), color: color.accent, marginBottom: 12 }}>
-              06 · PROGRAM
-            </div>
-            <h1 style={{ margin: 0, font: `600 52px/1 ${font.display}`, color: color.textBright }}>
-              Referrals
-            </h1>
-            <p
-              style={{
-                margin: '10px 0 0',
-                fontSize: 15,
-                lineHeight: 1.5,
-                color: color.textMuted,
-                maxWidth: 560,
-                textWrap: 'pretty',
-              }}
-            >
-              Share your link and log every referral here. Admins verify each one off-platform
-              before points land.
-            </p>
-          </div>
-          <button
-            className="bb-primary"
-            onClick={program.logReferral}
-            style={{
-              border: 0,
-              cursor: 'pointer',
-              padding: '12px 20px',
-              borderRadius: 8,
-              background: color.brand,
-              color: '#fff',
-              font: `600 14px/1 ${font.sans}`,
-              boxShadow: '0 0 24px rgba(30,124,242,.4)',
-            }}
-          >
-            Log a referral
-          </button>
-        </PanelHeader>
+        <PanelHeading
+          index={6}
+          section="PROGRAM"
+          title="Referrals"
+          description="Share your link and log every referral here. Admins verify each one off-platform before points land."
+          descriptionWidth={560}
+          underTabs
+          aside={<Button onClick={program.logReferral}>Log a referral</Button>}
+        />
 
         <PanelBody style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
           <div
@@ -280,21 +221,14 @@ export function StorePanel({ program }: { program: ProgramState }) {
               <span style={{ font: `500 17px/1 ${font.mono}`, color: color.accentSoft }}>
                 {VIEWER.referralLink}
               </span>
-              <button
+              <Button
+                variant="secondary"
+                small
                 onClick={() => program.copyReferralLink(VIEWER.referralLink)}
-                style={{
-                  border: `1px solid ${border.bright}`,
-                  cursor: 'pointer',
-                  padding: '9px 14px',
-                  borderRadius: 6,
-                  background: 'rgba(8,11,16,.6)',
-                  color: color.text,
-                  font: `600 12px/1 ${font.sans}`,
-                  minWidth: 82,
-                }}
+                style={{ borderRadius: 6, background: 'rgba(8,11,16,.6)', minWidth: 82 }}
               >
                 {program.copiedLink ? 'Copied ✓' : 'Copy'}
-              </button>
+              </Button>
               <span
                 style={{
                   font: `500 10px/1 ${font.mono}`,
@@ -317,42 +251,15 @@ export function StorePanel({ program }: { program: ProgramState }) {
               { label: 'VERIFIED', value: 0, accent: false },
               { label: 'POINTS PENDING', value: program.referrals.length * 100, accent: true },
             ].map((stat) => (
-              <div
-                key={stat.label}
-                style={{
-                  padding: '18px 20px',
-                  borderRadius: 10,
-                  border: `1px solid ${border.base}`,
-                }}
-              >
-                <div style={kicker()}>{stat.label}</div>
-                <div
-                  style={{
-                    font: `600 36px/1 ${font.display}`,
-                    color: stat.accent ? color.accentSoft : color.text,
-                    marginTop: 10,
-                  }}
-                >
-                  {stat.value}
-                </div>
-              </div>
+              <Stat key={stat.label} label={stat.label} value={stat.value} accent={stat.accent} boxed />
             ))}
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
             {program.referrals.length === 0 ? (
-              <div
-                style={{
-                  padding: 40,
-                  textAlign: 'center',
-                  fontSize: 14,
-                  color: color.textFaint,
-                  border: `1px dashed ${border.strong}`,
-                  borderRadius: 10,
-                }}
-              >
+              <EmptyState outlined>
                 No referrals logged yet. Share your link and log your first one.
-              </div>
+              </EmptyState>
             ) : (
               program.referrals.map((referral) => (
                 <div

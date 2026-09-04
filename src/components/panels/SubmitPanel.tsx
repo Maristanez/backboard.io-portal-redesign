@@ -9,17 +9,8 @@ import { border, brandFill, color, font, kicker } from '../../design/tokens'
 import { EARN_OPTIONS } from '../../data/program'
 import { EARN_CATEGORIES, type EarnCategory } from '../../domain/types'
 import type { ProgramState } from '../../state/useProgramState'
-import { PanelBody, PanelHeader } from '../shell/Panel'
-
-const fieldStyle = {
-  padding: '13px 14px',
-  borderRadius: 8,
-  border: `1px solid ${border.strong}`,
-  background: color.field,
-  color: color.text,
-  fontSize: 14,
-  outline: 'none',
-} as const
+import { PanelBody } from '../shell/Panel'
+import { Button, Field, PanelHeading, Stat, TextArea, Unit } from '../ui'
 
 export function SubmitPanel({ program }: { program: ProgramState }) {
   const { submissions, submitForm } = program
@@ -30,50 +21,28 @@ export function SubmitPanel({ program }: { program: ProgramState }) {
 
   return (
     <>
-      <PanelHeader
-        style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}
-      >
-        <div>
-          <div style={{ ...kicker(10, '.24em'), color: color.accent, marginBottom: 12 }}>
-            02 · PROGRAM
+      <PanelHeading
+        index={2}
+        section="PROGRAM"
+        title="Submit work"
+        description="Posts, events, builds, feedback. Anything on the bounty board. Attach proof, and points land once a reviewer approves."
+        descriptionWidth={560}
+        aside={
+          <div style={{ textAlign: 'right' }}>
+            <Stat
+              label="SUGGESTED AWARD"
+              size="hero"
+              accent
+              glow
+              value={
+                <span style={{ whiteSpace: 'nowrap' }}>
+                  {award} <Unit>PTS</Unit>
+                </span>
+              }
+            />
           </div>
-          <h1
-            style={{
-              margin: 0,
-              font: `600 52px/1 ${font.display}`,
-              letterSpacing: '-.01em',
-              color: color.textBright,
-            }}
-          >
-            Submit work
-          </h1>
-          <p
-            style={{
-              margin: '10px 0 0',
-              font: `400 15px/1.5 ${font.sans}`,
-              color: color.textMuted,
-              maxWidth: 560,
-              textWrap: 'pretty',
-            }}
-          >
-            Posts, events, builds, feedback. Anything on the bounty board. Attach proof, and points
-            land once a reviewer approves.
-          </p>
-        </div>
-        <div style={{ textAlign: 'right' }}>
-          <div style={{ ...kicker(), marginBottom: 8 }}>SUGGESTED AWARD</div>
-          <div
-            style={{
-              font: `600 40px/1 ${font.display}`,
-              color: color.accentSoft,
-              textShadow: '0 0 24px rgba(77,155,255,.5)',
-              whiteSpace: 'nowrap',
-            }}
-          >
-            {award} <span style={{ fontSize: 18, color: color.textFaint }}>PTS</span>
-          </div>
-        </div>
-      </PanelHeader>
+        }
+      />
 
       <PanelBody style={{ display: 'grid', gridTemplateColumns: '1.4fr 1fr', gap: 36 }}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 22 }}>
@@ -158,50 +127,28 @@ export function SubmitPanel({ program }: { program: ProgramState }) {
           </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
-            <label style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-              <span style={kicker()}>PROOF LINK</span>
-              <input
-                value={proof}
-                onChange={(e) => program.setProof(e.target.value)}
-                placeholder="https://…"
-                style={fieldStyle}
-              />
-              <span style={{ fontSize: 12, color: color.textFaint }}>
-                Post, repo, recording, or a screenshot in Drive.
-              </span>
-            </label>
-            <label style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-              <span style={kicker()}>NOTES FOR THE REVIEWER</span>
-              <textarea
-                value={notes}
-                onChange={(e) => program.setNotes(e.target.value)}
-                placeholder="Attendance, reach, anything that helps the review go fast"
-                rows={3}
-                style={{ ...fieldStyle, resize: 'none' }}
-              />
-            </label>
+            <Field
+              label="PROOF LINK"
+              value={proof}
+              onChange={program.setProof}
+              placeholder="https://…"
+              hint="Post, repo, recording, or a screenshot in Drive."
+            />
+            <TextArea
+              label="NOTES FOR THE REVIEWER"
+              value={notes}
+              onChange={program.setNotes}
+              placeholder="Attendance, reach, anything that helps the review go fast"
+            />
           </div>
 
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <span style={{ fontSize: 13, color: color.textDim }}>
               Reviewers can adjust the award.
             </span>
-            <button
-              className="bb-primary"
-              onClick={program.submitWork}
-              style={{
-                border: 0,
-                cursor: 'pointer',
-                padding: '13px 24px',
-                borderRadius: 8,
-                background: color.brand,
-                color: '#fff',
-                font: `600 14px/1 ${font.sans}`,
-                boxShadow: '0 0 28px rgba(30,124,242,.4)',
-              }}
-            >
+            <Button onClick={program.submitWork} style={{ padding: '13px 24px' }}>
               Submit for review →
-            </button>
+            </Button>
           </div>
         </div>
 

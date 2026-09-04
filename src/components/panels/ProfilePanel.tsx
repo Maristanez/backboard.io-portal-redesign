@@ -16,23 +16,14 @@ import {
 } from '../../data/program'
 import { PANEL_TABS, type TabOf } from '../../domain/types'
 import type { ProgramState } from '../../state/useProgramState'
-import { PanelBody, PanelHeader } from '../shell/Panel'
+import { PanelBody } from '../shell/Panel'
+import { Button, Labelled, Meter, PanelHeading, Stat, TextArea, fieldStyle } from '../ui'
 import { PanelTabs, TabPanel } from '../shell/PanelTabs'
 
 /** Sparkline viewBox. */
 const CHART = { width: 600, height: 200 }
 /** Circumference of the profile ring at r=90. */
 const RING = 565
-
-const fieldStyle = {
-  padding: '13px 14px',
-  borderRadius: 8,
-  border: `1px solid ${border.strong}`,
-  background: color.field,
-  color: color.text,
-  fontSize: 14,
-  outline: 'none',
-} as const
 
 /** Maps weekly points onto the sparkline's coordinate space. */
 function sparklinePoints(values: number[]): string {
@@ -62,14 +53,7 @@ export function ProfilePanel({ program }: { program: ProgramState }) {
       />
 
       <TabPanel active={active === 'Profile'}>
-        <PanelHeader style={{ padding: '18px 44px 20px' }}>
-          <div style={{ ...kicker(10, '.24em'), color: color.accent, marginBottom: 12 }}>
-            08 · YOU
-          </div>
-          <h1 style={{ margin: 0, font: `600 52px/1 ${font.display}`, color: color.textBright }}>
-            Profile
-          </h1>
-        </PanelHeader>
+        <PanelHeading index={8} section="YOU" title="Profile" underTabs />
 
         <PanelBody
           style={{
@@ -168,25 +152,13 @@ export function ProfilePanel({ program }: { program: ProgramState }) {
                 { label: 'LIFETIME', value: VIEWER.points, accent: false },
                 { label: 'TO CAPTAIN', value: NEXT_TIER.threshold - VIEWER.points, accent: false },
               ].map((stat) => (
-                <div
+                <Stat
                   key={stat.label}
-                  style={{
-                    padding: '18px 20px',
-                    borderRadius: 10,
-                    border: `1px solid ${border.base}`,
-                  }}
-                >
-                  <div style={kicker()}>{stat.label}</div>
-                  <div
-                    style={{
-                      font: `600 36px/1 ${font.display}`,
-                      color: stat.accent ? color.accentSoft : color.text,
-                      marginTop: 10,
-                    }}
-                  >
-                    {stat.value}
-                  </div>
-                </div>
+                  label={stat.label}
+                  value={stat.value}
+                  accent={stat.accent}
+                  boxed
+                />
               ))}
             </div>
 
@@ -236,53 +208,36 @@ export function ProfilePanel({ program }: { program: ProgramState }) {
             </div>
 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
-              <label style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-                <span style={kicker()}>BIO (SHOWN IN DIRECTORY)</span>
-                <textarea
-                  rows={3}
-                  placeholder="What you build, what you study…"
-                  style={{ ...fieldStyle, resize: 'none' }}
-                />
-              </label>
-              <label style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-                <span style={kicker()}>LINKS</span>
+              <TextArea
+                label="BIO (SHOWN IN DIRECTORY)"
+                placeholder="What you build, what you study…"
+              />
+              <Labelled label="LINKS">
                 <input
                   placeholder="x.com/…, linkedin.com/in/…, github.com/…"
                   style={fieldStyle}
                 />
-                <button
-                  className="bb-secondary"
-                  style={{
-                    alignSelf: 'flex-start',
-                    border: `1px solid ${border.bright}`,
-                    cursor: 'pointer',
-                    padding: '10px 16px',
-                    borderRadius: 6,
-                    background: 'none',
-                    color: color.text,
-                    font: `600 12px/1 ${font.sans}`,
-                  }}
+                <Button
+                  variant="secondary"
+                  small
+                  style={{ alignSelf: 'flex-start', borderRadius: 6, padding: '10px 16px' }}
                 >
                   Save profile
-                </button>
-              </label>
+                </Button>
+              </Labelled>
             </div>
           </div>
         </PanelBody>
       </TabPanel>
 
       <TabPanel active={active === 'Analytics'}>
-        <PanelHeader style={{ padding: '18px 44px 20px' }}>
-          <div style={{ ...kicker(10, '.24em'), color: color.accent, marginBottom: 12 }}>
-            08 · YOU
-          </div>
-          <h1 style={{ margin: 0, font: `600 52px/1 ${font.display}`, color: color.textBright }}>
-            Analytics
-          </h1>
-          <p style={{ margin: '10px 0 0', fontSize: 15, color: color.textMuted }}>
-            Your reach and points, last 12 weeks.
-          </p>
-        </PanelHeader>
+        <PanelHeading
+          index={8}
+          section="YOU"
+          title="Analytics"
+          description="Your reach and points, last 12 weeks."
+          underTabs
+        />
 
         <PanelBody
           style={{
@@ -301,31 +256,7 @@ export function ProfilePanel({ program }: { program: ProgramState }) {
             }}
           >
             {KPIS.map((kpi) => (
-              <div
-                key={kpi.label}
-                style={{
-                  padding: '18px 20px',
-                  borderRadius: 10,
-                  border: `1px solid ${border.base}`,
-                  background: color.inset,
-                }}
-              >
-                <div style={kicker()}>{kpi.label}</div>
-                <div
-                  style={{ font: `600 38px/1 ${font.display}`, color: color.text, marginTop: 10 }}
-                >
-                  {kpi.value}
-                </div>
-                <div
-                  style={{
-                    font: `500 11px/1 ${font.mono}`,
-                    color: color.accent,
-                    marginTop: 8,
-                  }}
-                >
-                  {kpi.delta}
-                </div>
-              </div>
+              <Stat key={kpi.label} label={kpi.label} value={kpi.value} note={kpi.delta} size="kpi" boxed />
             ))}
           </div>
 
@@ -419,22 +350,8 @@ export function ProfilePanel({ program }: { program: ProgramState }) {
                     {category.points}
                   </span>
                 </div>
-                <div
-                  style={{
-                    height: 4,
-                    borderRadius: 2,
-                    background: border.soft,
-                    marginTop: 8,
-                  }}
-                >
-                  <div
-                    style={{
-                      height: '100%',
-                      width: `${category.percent}%`,
-                      borderRadius: 2,
-                      background: color.brand,
-                    }}
-                  />
+                <div style={{ marginTop: 8 }}>
+                  <Meter percent={category.percent} />
                 </div>
               </div>
             ))}

@@ -4,25 +4,18 @@
  * Bars are scaled against the leader rather than a round number, so the shape
  * of the field reads at a glance even early in a semester.
  */
-import { border, brandFill, color, font, kicker } from '../../design/tokens'
+import { border, brandFill, color, font } from '../../design/tokens'
 import { LEADERS, TEAMS, VIEWER } from '../../data/program'
 import { PANEL_TABS, type TabOf } from '../../domain/types'
 import type { ProgramState } from '../../state/useProgramState'
-import { PanelBody, PanelHeader } from '../shell/Panel'
+import { PanelBody } from '../shell/Panel'
+import { Avatar, Button, Meter, PanelHeading, Unit } from '../ui'
 import { PanelTabs, TabPanel } from '../shell/PanelTabs'
 
 const TIER_COLOR: Record<string, string> = {
   Legend: color.pending,
   Captain: color.accentSoft,
   Rookie: color.textFaint,
-}
-
-function initialsOf(name: string): string {
-  return name
-    .split(' ')
-    .map((part) => part[0])
-    .join('')
-    .slice(0, 2)
 }
 
 export function LeaderboardPanel({ program }: { program: ProgramState }) {
@@ -40,52 +33,41 @@ export function LeaderboardPanel({ program }: { program: ProgramState }) {
       />
 
       <TabPanel active={active === 'Ambassadors'}>
-        <PanelHeader
-          style={{
-            padding: '18px 44px 20px',
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'flex-end',
-          }}
-        >
-          <div>
-            <div style={{ ...kicker(10, '.24em'), color: color.accent, marginBottom: 12 }}>
-              05 · PROGRAM
-            </div>
-            <h1 style={{ margin: 0, font: `600 52px/1 ${font.display}`, color: color.textBright }}>
-              Leaderboard
-            </h1>
-            <p style={{ margin: '10px 0 0', fontSize: 15, color: color.textMuted }}>
-              Fall semester · resets Jan 1.
-            </p>
-          </div>
-          <div
-            style={{
-              display: 'flex',
-              gap: 4,
-              padding: 4,
-              border: `1px solid ${border.base}`,
-              borderRadius: 8,
-            }}
-          >
-            <span
+        <PanelHeading
+          index={5}
+          section="PROGRAM"
+          title="Leaderboard"
+          description="Fall semester · resets Jan 1."
+          underTabs
+          aside={
+            <div
               style={{
-                padding: '8px 14px',
-                borderRadius: 5,
-                background: 'rgba(30,124,242,.2)',
-                color: color.accentSoft,
-                font: `500 12px/1 ${font.sans}`,
+                display: 'flex',
+                gap: 4,
+                padding: 4,
+                border: `1px solid ${border.base}`,
+                borderRadius: 8,
               }}
             >
-              Semester
-            </span>
-            <span
-              style={{ padding: '8px 14px', color: color.textDim, font: `500 12px/1 ${font.sans}` }}
-            >
-              All time
-            </span>
-          </div>
-        </PanelHeader>
+              <span
+                style={{
+                  padding: '8px 14px',
+                  borderRadius: 5,
+                  background: 'rgba(30,124,242,.2)',
+                  color: color.accentSoft,
+                  font: `500 12px/1 ${font.sans}`,
+                }}
+              >
+                Semester
+              </span>
+              <span
+                style={{ padding: '8px 14px', color: color.textDim, font: `500 12px/1 ${font.sans}` }}
+              >
+                All time
+              </span>
+            </div>
+          }
+        />
 
         <PanelBody
           style={{
@@ -120,21 +102,7 @@ export function LeaderboardPanel({ program }: { program: ProgramState }) {
                   {String(i + 1).padStart(2, '0')}
                 </span>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                  <span
-                    style={{
-                      width: 32,
-                      height: 32,
-                      borderRadius: '50%',
-                      background: 'rgba(30,124,242,.15)',
-                      border: '1px solid rgba(77,155,255,.3)',
-                      display: 'grid',
-                      placeItems: 'center',
-                      font: `600 11px/1 ${font.sans}`,
-                      color: color.accentSoft,
-                    }}
-                  >
-                    {initialsOf(leader.name)}
-                  </span>
+                  <Avatar name={leader.name} />
                   <div>
                     <div style={{ font: `600 14px/1.2 ${font.sans}`, color: color.text }}>
                       {leader.name}
@@ -144,23 +112,7 @@ export function LeaderboardPanel({ program }: { program: ProgramState }) {
                     </div>
                   </div>
                 </div>
-                <div
-                  style={{
-                    height: 4,
-                    borderRadius: 2,
-                    background: border.soft,
-                    overflow: 'hidden',
-                  }}
-                >
-                  <div
-                    style={{
-                      height: '100%',
-                      width: `${Math.round((leader.points / topScore) * 100)}%`,
-                      background: 'linear-gradient(90deg,#1e7cf2,#8ec0ff)',
-                      boxShadow: '0 0 12px rgba(77,155,255,.6)',
-                    }}
-                  />
-                </div>
+                <Meter percent={Math.round((leader.points / topScore) * 100)} emphasis />
                 <div style={{ textAlign: 'right' }}>
                   <span style={{ font: `600 18px/1 ${font.mono}`, color: color.text }}>
                     {leader.points.toLocaleString()}
@@ -183,40 +135,14 @@ export function LeaderboardPanel({ program }: { program: ProgramState }) {
       </TabPanel>
 
       <TabPanel active={active === 'Campuses'}>
-        <PanelHeader
-          style={{
-            padding: '18px 44px 20px',
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'flex-end',
-          }}
-        >
-          <div>
-            <div style={{ ...kicker(10, '.24em'), color: color.accent, marginBottom: 12 }}>
-              05 · PROGRAM
-            </div>
-            <h1 style={{ margin: 0, font: `600 52px/1 ${font.display}`, color: color.textBright }}>
-              Campus teams
-            </h1>
-            <p style={{ margin: '10px 0 0', fontSize: 15, color: color.textMuted }}>
-              Ambassadors grouped by school. Team points unlock campus budgets.
-            </p>
-          </div>
-          <button
-            className="bb-secondary"
-            style={{
-              border: `1px solid ${border.bright}`,
-              cursor: 'pointer',
-              padding: '12px 20px',
-              borderRadius: 8,
-              background: 'none',
-              color: color.text,
-              font: `600 14px/1 ${font.sans}`,
-            }}
-          >
-            Request a team
-          </button>
-        </PanelHeader>
+        <PanelHeading
+          index={5}
+          section="PROGRAM"
+          title="Campus teams"
+          description="Ambassadors grouped by school. Team points unlock campus budgets."
+          underTabs
+          aside={<Button variant="secondary">Request a team</Button>}
+        />
 
         <PanelBody
           style={{
@@ -256,25 +182,8 @@ export function LeaderboardPanel({ program }: { program: ProgramState }) {
                 </span>
               </div>
               <div style={{ display: 'flex', alignItems: 'center' }}>
-                {team.memberInitials.map((initials) => (
-                  <span
-                    key={initials}
-                    style={{
-                      width: 30,
-                      height: 30,
-                      borderRadius: '50%',
-                      background: '#101620',
-                      border: '2px solid #0a0d13',
-                      display: 'grid',
-                      placeItems: 'center',
-                      font: `600 10px/1 ${font.sans}`,
-                      color: color.accentSoft,
-                      // Overlap, so the row reads as a stack.
-                      marginRight: -8,
-                    }}
-                  >
-                    {initials}
-                  </span>
+                {team.memberInitials.map((member) => (
+                  <Avatar key={member} name={member} size={30} stacked />
                 ))}
                 <span style={{ marginLeft: 16, fontSize: 12, color: color.textFaint }}>
                   {team.memberCount} ambassadors
@@ -284,8 +193,7 @@ export function LeaderboardPanel({ program }: { program: ProgramState }) {
                 style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}
               >
                 <span style={{ font: `600 30px/1 ${font.display}`, color: color.accentSoft }}>
-                  {team.points.toLocaleString()}{' '}
-                  <span style={{ fontSize: 13, color: color.textFaint }}>PTS</span>
+                  {team.points.toLocaleString()} <Unit size={13}>PTS</Unit>
                 </span>
                 <span style={{ fontSize: 12, color: color.textDim }}>
                   {team.eventCount} events this term

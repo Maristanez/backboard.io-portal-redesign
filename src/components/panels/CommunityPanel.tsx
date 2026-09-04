@@ -6,30 +6,13 @@
  */
 import { useState } from 'react'
 
-import { border, color, font, kicker } from '../../design/tokens'
+import { border, color, font } from '../../design/tokens'
 import { MEMBERS, OPPORTUNITIES, RESOURCES } from '../../data/program'
 import { PANEL_TABS, type TabOf } from '../../domain/types'
 import type { ProgramState } from '../../state/useProgramState'
-import { PanelBody, PanelHeader } from '../shell/Panel'
+import { PanelBody } from '../shell/Panel'
+import { Avatar, Button, EmptyState, PanelHeading, fieldStyle } from '../ui'
 import { PanelTabs, TabPanel } from '../shell/PanelTabs'
-
-const fieldStyle = {
-  padding: '12px 16px',
-  borderRadius: 8,
-  border: `1px solid ${border.strong}`,
-  background: color.field,
-  color: color.text,
-  fontSize: 14,
-  outline: 'none',
-} as const
-
-function initialsOf(name: string): string {
-  return name
-    .split(' ')
-    .map((part) => part[0])
-    .join('')
-    .slice(0, 2)
-}
 
 export function CommunityPanel({ program }: { program: ProgramState }) {
   const tabs = PANEL_TABS.Community
@@ -54,33 +37,22 @@ export function CommunityPanel({ program }: { program: ProgramState }) {
       />
 
       <TabPanel active={active === 'Directory'}>
-        <PanelHeader
-          style={{
-            padding: '18px 44px 20px',
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'flex-end',
-          }}
-        >
-          <div>
-            <div style={{ ...kicker(10, '.24em'), color: color.accent, marginBottom: 12 }}>
-              07 · COMMUNITY
-            </div>
-            <h1 style={{ margin: 0, font: `600 52px/1 ${font.display}`, color: color.textBright }}>
-              Directory
-            </h1>
-            <p style={{ margin: '10px 0 0', fontSize: 15, color: color.textMuted }}>
-              26 ambassadors across 11 campuses.
-            </p>
-          </div>
-          <input
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search name or school…"
-            aria-label="Search the directory"
-            style={{ ...fieldStyle, width: 280 }}
-          />
-        </PanelHeader>
+        <PanelHeading
+          index={7}
+          section="COMMUNITY"
+          title="Directory"
+          description="26 ambassadors across 11 campuses."
+          underTabs
+          aside={
+            <input
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search name or school…"
+              aria-label="Search the directory"
+              style={{ ...fieldStyle, padding: '12px 16px', width: 280 }}
+            />
+          }
+        />
 
         <PanelBody
           style={{
@@ -92,18 +64,8 @@ export function CommunityPanel({ program }: { program: ProgramState }) {
           }}
         >
           {members.length === 0 && (
-            <div
-              style={{
-                gridColumn: '1/5',
-                padding: 40,
-                textAlign: 'center',
-                fontSize: 14,
-                color: color.textFaint,
-                border: `1px dashed ${border.strong}`,
-                borderRadius: 10,
-              }}
-            >
-              No ambassadors match “{search}”.
+            <div style={{ gridColumn: '1/5' }}>
+              <EmptyState outlined>No ambassadors match “{search}”.</EmptyState>
             </div>
           )}
           {members.map((member) => (
@@ -121,22 +83,7 @@ export function CommunityPanel({ program }: { program: ProgramState }) {
               }}
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                <span
-                  style={{
-                    width: 38,
-                    height: 38,
-                    borderRadius: '50%',
-                    background: 'rgba(30,124,242,.15)',
-                    border: '1px solid rgba(77,155,255,.3)',
-                    display: 'grid',
-                    placeItems: 'center',
-                    font: `600 12px/1 ${font.sans}`,
-                    color: color.accentSoft,
-                    flex: 'none',
-                  }}
-                >
-                  {initialsOf(member.name)}
-                </span>
+                <Avatar name={member.name} size={38} />
                 <div>
                   <div style={{ display: 'flex', gap: 8, alignItems: 'baseline' }}>
                     <span style={{ font: `600 14px/1.2 ${font.sans}`, color: color.text }}>
@@ -181,17 +128,13 @@ export function CommunityPanel({ program }: { program: ProgramState }) {
       </TabPanel>
 
       <TabPanel active={active === 'Opportunities'}>
-        <PanelHeader style={{ padding: '18px 44px 20px' }}>
-          <div style={{ ...kicker(10, '.24em'), color: color.accent, marginBottom: 12 }}>
-            07 · COMMUNITY
-          </div>
-          <h1 style={{ margin: 0, font: `600 52px/1 ${font.display}`, color: color.textBright }}>
-            Opportunities
-          </h1>
-          <p style={{ margin: '10px 0 0', fontSize: 15, color: color.textMuted }}>
-            Early access to jobs and internships for ambassadors.
-          </p>
-        </PanelHeader>
+        <PanelHeading
+          index={7}
+          section="COMMUNITY"
+          title="Opportunities"
+          description="Early access to jobs and internships for ambassadors."
+          underTabs
+        />
 
         <PanelBody style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
           {OPPORTUNITIES.map((role) => (
@@ -235,50 +178,26 @@ export function CommunityPanel({ program }: { program: ProgramState }) {
                 <span style={{ font: `500 11px/1 ${font.mono}`, color: color.textFaint }}>
                   CLOSES {role.closes}
                 </span>
-                <button
-                  className="bb-secondary"
-                  style={{
-                    border: `1px solid ${border.bright}`,
-                    cursor: 'pointer',
-                    padding: '11px 18px',
-                    borderRadius: 8,
-                    background: 'none',
-                    color: color.text,
-                    font: `600 13px/1 ${font.sans}`,
-                  }}
-                >
+                <Button variant="secondary" style={{ padding: '11px 18px', fontSize: 13 }}>
                   View role ↗
-                </button>
+                </Button>
               </div>
             </div>
           ))}
-          <div
-            style={{
-              padding: 20,
-              textAlign: 'center',
-              fontSize: 13,
-              color: color.textFaint,
-              border: `1px dashed ${border.strong}`,
-              borderRadius: 10,
-            }}
-          >
+          <EmptyState outlined>
             More roles open each semester. Ambassadors at Captain+ get a referral fast-track.
-          </div>
+          </EmptyState>
         </PanelBody>
       </TabPanel>
 
       <TabPanel active={active === 'Resources'}>
-        <PanelHeader style={{ padding: '18px 44px 20px' }}>
-          <div style={{ ...kicker(10, '.24em'), color: color.accent, marginBottom: 12 }}>
-            07 · COMMUNITY
-          </div>
-          <h1 style={{ margin: 0, font: `600 52px/1 ${font.display}`, color: color.textBright }}>
-            Resources
-          </h1>
-          <p style={{ margin: '10px 0 0', fontSize: 15, color: color.textMuted }}>
-            Brand kit, talk tracks, and everything you need to represent Backboard.
-          </p>
-        </PanelHeader>
+        <PanelHeading
+          index={7}
+          section="COMMUNITY"
+          title="Resources"
+          description="Brand kit, talk tracks, and everything you need to represent Backboard."
+          underTabs
+        />
 
         <PanelBody
           style={{

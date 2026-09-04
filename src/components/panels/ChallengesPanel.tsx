@@ -4,11 +4,12 @@
  * Unlike Submit, where you propose what something is worth, these carry a set
  * price. The button reflects where a claim stands: open, under review, or done.
  */
-import { border, color, font, kicker } from '../../design/tokens'
+import { border, color, font } from '../../design/tokens'
 import { CHALLENGES } from '../../data/program'
 import type { ReviewStatus } from '../../domain/types'
 import type { ProgramState } from '../../state/useProgramState'
-import { PanelBody, PanelHeader } from '../shell/Panel'
+import { PanelBody } from '../shell/Panel'
+import { Button, PanelHeading, StatusPill, Unit } from '../ui'
 
 const STATUS_COLOR: Record<ReviewStatus, string> = {
   approved: color.approved,
@@ -30,27 +31,13 @@ interface ChallengesPanelProps {
 export function ChallengesPanel({ program, onApply }: ChallengesPanelProps) {
   return (
     <>
-      <PanelHeader>
-        <div style={{ ...kicker(10, '.24em'), color: color.accent, marginBottom: 12 }}>
-          03 · PROGRAM
-        </div>
-        <h1 style={{ margin: 0, font: `600 52px/1 ${font.display}`, color: color.textBright }}>
-          Challenges
-        </h1>
-        <p
-          style={{
-            margin: '10px 0 0',
-            fontSize: 15,
-            lineHeight: 1.5,
-            color: color.textMuted,
-            maxWidth: 560,
-            textWrap: 'pretty',
-          }}
-        >
-          Admin-published challenges with set points and claim limits. Every submission is reviewed
-          before points land.
-        </p>
-      </PanelHeader>
+      <PanelHeading
+        index={3}
+        section="PROGRAM"
+        title="Challenges"
+        description="Admin-published challenges with set points and claim limits. Every submission is reviewed before points land."
+        descriptionWidth={560}
+      />
 
       <PanelBody style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
         {CHALLENGES.map((challenge, i) => {
@@ -78,19 +65,7 @@ export function ChallengesPanel({ program, onApply }: ChallengesPanelProps) {
                   <span style={{ font: `600 20px/1.2 ${font.sans}`, color: color.text }}>
                     {challenge.title}
                   </span>
-                  <span
-                    style={{
-                      font: `500 9.5px/1 ${font.mono}`,
-                      letterSpacing: '.16em',
-                      padding: '5px 8px',
-                      borderRadius: 4,
-                      color: STATUS_COLOR[status],
-                      border: `1px solid ${STATUS_COLOR[status]}`,
-                      opacity: 0.9,
-                    }}
-                  >
-                    {status.toUpperCase()}
-                  </span>
+                  <StatusPill label={status.toUpperCase()} tone={STATUS_COLOR[status]} />
                 </div>
                 <p
                   style={{
@@ -132,23 +107,15 @@ export function ChallengesPanel({ program, onApply }: ChallengesPanelProps) {
                     whiteSpace: 'nowrap',
                   }}
                 >
-                  {challenge.points} <span style={{ fontSize: 14, color: color.textFaint }}>PTS</span>
+                  {challenge.points} <Unit size={14}>PTS</Unit>
                 </div>
-                <button
-                  onClick={() => isOpen && onApply(i, challenge.title)}
+                <Button
+                  onClick={() => onApply(i, challenge.title)}
                   disabled={!isOpen}
-                  style={{
-                    border: `1px solid ${isOpen ? color.brand : border.bright}`,
-                    cursor: isOpen ? 'pointer' : 'default',
-                    padding: '11px 18px',
-                    borderRadius: 8,
-                    background: isOpen ? color.brand : 'transparent',
-                    color: isOpen ? '#fff' : color.textDim,
-                    font: `600 13px/1 ${font.sans}`,
-                  }}
+                  style={{ padding: '11px 18px', fontSize: 13 }}
                 >
                   {STATUS_LABEL[status]}
-                </button>
+                </Button>
               </div>
             </div>
           )

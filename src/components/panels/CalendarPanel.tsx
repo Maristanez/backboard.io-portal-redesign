@@ -10,7 +10,8 @@ import { buildMonthGrid, shiftMonth } from '../../calendar/month'
 import { border, brandFill, color, font, kicker } from '../../design/tokens'
 import { CALENDAR_EVENTS, DAYS_OF_WEEK, MONTH_NAMES, TODAY } from '../../data/program'
 import type { CalendarEvent } from '../../domain/types'
-import { PanelBody, PanelHeader } from '../shell/Panel'
+import { PanelBody } from '../shell/Panel'
+import { Button, PanelHeading } from '../ui'
 
 interface CalendarPanelProps {
   onOpenEvent: (event: CalendarEvent) => void
@@ -27,22 +28,13 @@ export function CalendarPanel({ onOpenEvent, onSubmitEvent }: CalendarPanelProps
 
   return (
     <>
-      <PanelHeader
-        style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}
-      >
-        <div>
-          <div style={{ ...kicker(10, '.24em'), color: color.accent, marginBottom: 12 }}>
-            04 · PROGRAM
-          </div>
-          <h1 style={{ margin: 0, font: `600 52px/1 ${font.display}`, color: color.textBright }}>
-            Shared calendar
-          </h1>
-          <p style={{ margin: '10px 0 0', fontSize: 15, lineHeight: 1.5, color: color.textMuted }}>
-            Ambassador events worldwide. Submit yours for approval.
-          </p>
-        </div>
-
-        <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+      <PanelHeading
+        index={4}
+        section="PROGRAM"
+        title="Shared calendar"
+        description="Ambassador events worldwide. Submit yours for approval."
+        aside={
+          <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
           <div
             style={{
               display: 'flex',
@@ -78,24 +70,10 @@ export function CalendarPanel({ onOpenEvent, onSubmitEvent }: CalendarPanelProps
               ›
             </button>
           </div>
-          <button
-            className="bb-primary"
-            onClick={onSubmitEvent}
-            style={{
-              border: 0,
-              cursor: 'pointer',
-              padding: '12px 20px',
-              borderRadius: 8,
-              background: color.brand,
-              color: '#fff',
-              font: `600 14px/1 ${font.sans}`,
-              boxShadow: '0 0 24px rgba(30,124,242,.4)',
-            }}
-          >
-            Submit event
-          </button>
-        </div>
-      </PanelHeader>
+            <Button onClick={onSubmitEvent}>Submit event</Button>
+          </div>
+        }
+      />
 
       <PanelBody
         style={{

@@ -8,7 +8,8 @@ import { border, color, font, kicker } from '../../design/tokens'
 import { CHECKLIST, NEXT_TIER, VIEWER } from '../../data/program'
 import type { PanelName } from '../../domain/types'
 import type { ProgramState } from '../../state/useProgramState'
-import { PanelBody, PanelHeader } from '../shell/Panel'
+import { PanelBody } from '../shell/Panel'
+import { Card, Meter, PanelHeading, Stat, Unit } from '../ui'
 
 interface HomePanelProps {
   program: ProgramState
@@ -63,72 +64,31 @@ export function HomePanel({ program, points, onNavigate }: HomePanelProps) {
 
   return (
     <>
-      <PanelHeader
-        style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}
-      >
-        <div>
-          <div style={{ ...kicker(10, '.24em'), color: color.accent, marginBottom: 12 }}>
-            01 · TODAY
-          </div>
-          <h1
-            style={{
-              margin: 0,
-              font: `600 52px/1 ${font.display}`,
-              letterSpacing: '-.01em',
-              color: color.textBright,
-            }}
-          >
-            Good {greetingFor(new Date().getHours())}, {VIEWER.name.split(' ')[0]}
-          </h1>
-          <p
-            style={{
-              margin: '10px 0 0',
-              font: `400 15px/1.5 ${font.sans}`,
-              color: color.textMuted,
-              maxWidth: 600,
-              textWrap: 'pretty',
-            }}
-          >
-            {doneCount < 4 && `${4 - doneCount} onboarding steps left. `}
-            You&rsquo;re #{VIEWER.rank} of {VIEWER.cohortSize} this semester — {toNextTier} points
-            from {NEXT_TIER.name}.
-          </p>
-        </div>
-        <div style={{ textAlign: 'right', minWidth: 260 }}>
-          <div style={{ ...kicker(), marginBottom: 8 }}>NEXT TIER · {NEXT_TIER.name.toUpperCase()}</div>
-          <div
-            style={{
-              font: `600 40px/1 ${font.display}`,
-              color: color.accentSoft,
-              textShadow: '0 0 24px rgba(77,155,255,.5)',
-            }}
-          >
-            {points}{' '}
-            <span style={{ fontSize: 18, color: color.textFaint }}>
-              / {NEXT_TIER.threshold.toLocaleString()} PTS
-            </span>
-          </div>
-          <div
-            style={{
-              height: 4,
-              borderRadius: 2,
-              background: border.soft,
-              marginTop: 12,
-              overflow: 'hidden',
-            }}
-          >
-            <div
-              style={{
-                height: '100%',
-                width: `${tierPercent}%`,
-                background: 'linear-gradient(90deg,#1e7cf2,#8ec0ff)',
-                boxShadow: '0 0 12px rgba(77,155,255,.6)',
-                transition: 'width 1.2s cubic-bezier(.22,.8,.2,1)',
-              }}
+      <PanelHeading
+        index={1}
+        section="TODAY"
+        title={`Good ${greetingFor(new Date().getHours())}, ${VIEWER.name.split(' ')[0]}`}
+        description={`${doneCount < 4 ? `${4 - doneCount} onboarding steps left. ` : ''}You're #${VIEWER.rank} of ${VIEWER.cohortSize} this semester — ${toNextTier} points from ${NEXT_TIER.name}.`}
+        descriptionWidth={600}
+        aside={
+          <div style={{ textAlign: 'right', minWidth: 260 }}>
+            <Stat
+              label={`NEXT TIER · ${NEXT_TIER.name.toUpperCase()}`}
+              size="hero"
+              accent
+              glow
+              value={
+                <>
+                  {points} <Unit>/ {NEXT_TIER.threshold.toLocaleString()} PTS</Unit>
+                </>
+              }
             />
+            <div style={{ marginTop: 12 }}>
+              <Meter percent={tierPercent} emphasis transitionMs={1200} />
+            </div>
           </div>
-        </div>
-      </PanelHeader>
+        }
+      />
 
       <PanelBody style={{ display: 'grid', gridTemplateColumns: '1.5fr 1fr', gap: 32 }}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 26, minWidth: 0 }}>
@@ -176,37 +136,15 @@ export function HomePanel({ program, points, onNavigate }: HomePanelProps) {
             </div>
           </div>
 
-          <div
-            style={{
-              padding: '22px 24px',
-              borderRadius: 12,
-              border: `1px solid ${border.base}`,
-              background: color.inset,
-            }}
-          >
+          <Card>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
               <span style={kicker()}>GETTING STARTED</span>
               <span style={{ font: `500 11px/1 ${font.mono}`, color: color.accentSoft }}>
                 {doneCount} / 4 · {donePercent}%
               </span>
             </div>
-            <div
-              style={{
-                height: 3,
-                borderRadius: 2,
-                background: border.soft,
-                margin: '14px 0 6px',
-                overflow: 'hidden',
-              }}
-            >
-              <div
-                style={{
-                  height: '100%',
-                  width: `${donePercent}%`,
-                  background: color.brand,
-                  transition: 'width .8s',
-                }}
-              />
+            <div style={{ margin: '14px 0 6px' }}>
+              <Meter percent={donePercent} height={3} transitionMs={800} />
             </div>
             <div style={{ display: 'flex', flexDirection: 'column' }}>
               {CHECKLIST.map((item) => {
@@ -266,21 +204,10 @@ export function HomePanel({ program, points, onNavigate }: HomePanelProps) {
                 )
               })}
             </div>
-          </div>
+          </Card>
         </div>
 
-        <div
-          style={{
-            padding: '22px 24px',
-            borderRadius: 12,
-            border: `1px solid ${border.base}`,
-            background: color.inset,
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 4,
-            minWidth: 0,
-          }}
-        >
+        <Card style={{ display: 'flex', flexDirection: 'column', gap: 4, minWidth: 0 }}>
           <div
             style={{
               display: 'flex',
@@ -346,7 +273,7 @@ export function HomePanel({ program, points, onNavigate }: HomePanelProps) {
               </span>
             </div>
           ))}
-        </div>
+        </Card>
       </PanelBody>
     </>
   )

@@ -7,8 +7,10 @@ import {
   CHECKLIST,
   EARN_OPTIONS,
   LEADERS,
+  MEMBERS,
   PALETTE_TARGETS,
   STORE_ITEMS,
+  TEAMS,
   TIER_LADDER,
   VIEWER,
   tierFor,
@@ -65,6 +67,55 @@ describe('program data', () => {
     const index = LEADERS.findIndex((l) => l.name === VIEWER.name)
     expect(index).toBe(VIEWER.rank - 1)
     expect(LEADERS[index]?.points).toBe(VIEWER.points)
+  })
+
+  it('marks exactly one team as the viewer\'s own', () => {
+    expect(TEAMS.filter((t) => t.isMine)).toHaveLength(1)
+  })
+
+  it('flags the team at the viewer\'s own school', () => {
+    // The viewer's school and their highlighted team have to agree, or the
+    // Campuses tab claims they belong somewhere they don't.
+    const mine = TEAMS.find((t) => t.isMine)!
+    expect(VIEWER.school).toContain(mine.name)
+  })
+
+  it('counts every team\'s members to match its avatar row', () => {
+    for (const team of TEAMS) {
+      expect(team.memberInitials, `${team.name} avatars`).toHaveLength(team.memberCount)
+    }
+  })
+
+  it('keeps the roster to the two York ambassadors', () => {
+    expect(LEADERS).toHaveLength(2)
+    for (const leader of LEADERS) {
+      expect(leader.school).toBe(VIEWER.school)
+    }
+  })
+
+  it('sizes the cohort to the roster', () => {
+    expect(VIEWER.cohortSize).toBe(LEADERS.length)
+  })
+
+  it('only lists ambassadors who exist on the roster', () => {
+    // The directory is a view onto the roster; a member who isn't an
+    // ambassador would be a name with nothing behind it.
+    const roster = LEADERS.map((l) => l.name)
+    for (const member of MEMBERS) {
+      expect(roster, `${member.name} is not on the roster`).toContain(member.name)
+    }
+  })
+
+  it('attributes every calendar event to someone on the roster', () => {
+    const roster = LEADERS.map((l) => l.name)
+    for (const event of Object.values(CALENDAR_EVENTS)) {
+      expect(roster, `${event.title} attributed to ${event.by}`).toContain(event.by)
+    }
+  })
+
+  it('lists the viewer among their own team\'s members', () => {
+    const mine = TEAMS.find((t) => t.isMine)!
+    expect(mine.memberInitials).toContain(VIEWER.initials)
   })
 
   it('prices every store item above the viewer, except the first shelf', () => {

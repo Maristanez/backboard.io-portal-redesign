@@ -11,54 +11,11 @@ import type {
 
 export const MEMBERS: Member[] = [
   {
-    name: 'Peter Lian',
-    school: 'University of Waterloo',
+    name: 'Zahadad Jarif',
+    school: 'York University',
     tier: 'Rookie',
-    bio: '2nd-year CS Waterloo, currently on co-op in Ottawa.',
-    links: ['X', 'LinkedIn', 'GitHub', 'YouTube'],
-  },
-  {
-    name: 'Preston Jay Susanto',
-    school: 'Diablo Valley College',
-    tier: 'Rookie',
-    bio: '2nd-year EECS @ DVC. Building Unvibe, the first multi-learning layer for vibe coders.',
-    links: ['LinkedIn', 'Instagram', 'Website'],
-  },
-  { name: 'Qasim Li', school: 'University of Toronto', tier: 'Legend', bio: '', links: ['GitHub'] },
-  {
-    name: 'Ricardo Gao',
-    school: 'Conestoga College',
-    tier: 'Rookie',
-    bio: 'chatgpt generating….',
-    links: ['LinkedIn', 'Instagram'],
-  },
-  {
-    name: 'Seif Otefa',
-    school: 'McMaster University',
-    tier: 'Legend',
-    bio: 'Program admin. Ask me about budgets.',
-    links: ['X', 'LinkedIn', 'GitHub', 'Website'],
-  },
-  {
-    name: 'Teghveer Ateliey',
-    school: 'McMaster University',
-    tier: 'Rookie',
-    bio: 'Mechatronics Engineering & Society',
-    links: ['X', 'LinkedIn', 'GitHub'],
-  },
-  {
-    name: 'Waaberi Ibrahim',
-    school: 'University of Ottawa',
-    tier: 'Rookie',
-    bio: '2nd year SWE student',
-    links: ['X', 'LinkedIn', 'GitHub'],
-  },
-  {
-    name: 'Sanika Surose',
-    school: 'McMaster University',
-    tier: 'Rookie',
-    bio: '3rd year SWE @ McMaster',
-    links: ['LinkedIn', 'GitHub', 'Instagram'],
+    bio: '',
+    links: [],
   },
 ]
 

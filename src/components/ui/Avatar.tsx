@@ -15,14 +15,23 @@ export function initials(name: string): string {
     .slice(0, 2)
 }
 
-interface AvatarProps {
-  name: string
+interface AvatarBase {
   size?: number
   /** Stacked avatars overlap and sit on a solid ground so they read as a pile. */
   stacked?: boolean
 }
 
-export function Avatar({ name, size = 32, stacked = false }: AvatarProps) {
+/**
+ * Either a full name to derive initials from, or initials already computed.
+ *
+ * Modelled as a union because passing stored initials as `name` silently
+ * re-derives them — 'YE' becomes 'Y' — and the result looks plausible enough
+ * to miss. Requiring the caller to say which they have makes that a type error.
+ */
+type AvatarProps = AvatarBase &
+  ({ name: string; label?: never } | { label: string; name?: never })
+
+export function Avatar({ name, label, size = 32, stacked = false }: AvatarProps) {
   return (
     <span
       aria-hidden
@@ -43,7 +52,7 @@ export function Avatar({ name, size = 32, stacked = false }: AvatarProps) {
             }),
       }}
     >
-      {initials(name)}
+      {label ?? initials(name as string)}
     </span>
   )
 }

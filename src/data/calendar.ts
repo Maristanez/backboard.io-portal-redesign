@@ -13,21 +13,21 @@ export const CALENDAR_EVENTS: EventsByDay = {
     date: 'Sunday, September 13 at 12:00 PM',
     where: "Builder's Space Waterloo",
     target: 60,
-    by: 'Peter Lian',
+    by: 'Zahadad Jarif',
   },
   '2026-9-17': {
     title: 'Hack the North',
     date: 'Thursday, September 17 at 6:00 PM',
     where: 'University of Waterloo, E7',
     target: 120,
-    by: 'Seif Otefa',
+    by: 'Bryan Maristanez',
   },
   '2026-10-3': {
     title: 'DeltaHacks kickoff',
     date: 'Saturday, October 3 at 10:00 AM',
     where: 'McMaster University',
     target: 80,
-    by: 'Bilal M.',
+    by: 'Zahadad Jarif',
   },
 }
 

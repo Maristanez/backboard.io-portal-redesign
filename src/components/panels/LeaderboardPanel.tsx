@@ -183,7 +183,7 @@ export function LeaderboardPanel({ program }: { program: ProgramState }) {
               </div>
               <div style={{ display: 'flex', alignItems: 'center' }}>
                 {team.memberInitials.map((member) => (
-                  <Avatar key={member} name={member} size={30} stacked />
+                  <Avatar key={member} label={member} size={30} stacked />
                 ))}
                 <span style={{ marginLeft: 16, fontSize: 12, color: color.textFaint }}>
                   {team.memberCount} ambassadors

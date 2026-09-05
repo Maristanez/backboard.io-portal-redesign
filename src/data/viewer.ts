@@ -8,9 +8,9 @@ import type {
 } from '../domain/types'
 
 export const VIEWER = {
-  name: 'Bilal M.',
+  name: 'Bryan Maristanez',
   initials: 'BM',
-  school: 'McMaster University',
+  school: 'York University',
   joined: 'Joined Aug 2026',
   tier: 'ROOKIE',
   cohort: "FALL '26 COHORT",
@@ -18,8 +18,8 @@ export const VIEWER = {
   points: 65,
   referralCode: 'OZEYBYR3',
   referralLink: 'https://app.backboard.io/signup?ref=OZEYBYR3',
-  rank: 8,
-  cohortSize: 26,
+  rank: 1,
+  cohortSize: 2,
 } as const
 
 /** Points needed for the next tier up from the viewer's. */

@@ -7,7 +7,7 @@
 import { useState } from 'react'
 
 import { border, color, font } from '../../design/tokens'
-import { MEMBERS, OPPORTUNITIES, RESOURCES } from '../../data'
+import { LEADERS, MEMBERS, OPPORTUNITIES, RESOURCES, VIEWER } from '../../data'
 import { PANEL_TABS, type TabOf } from '../../domain/types'
 import type { ProgramState } from '../../state/useProgramState'
 import { PanelBody } from '../shell/Panel'
@@ -41,7 +41,7 @@ export function CommunityPanel({ program }: { program: ProgramState }) {
           index={7}
           section="COMMUNITY"
           title="Directory"
-          description="26 ambassadors across 11 campuses."
+          description={`${LEADERS.length} ambassadors at ${VIEWER.school}.`}
           underTabs
           aside={
             <input

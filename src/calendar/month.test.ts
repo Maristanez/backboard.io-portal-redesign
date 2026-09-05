@@ -8,7 +8,7 @@ const events = {
     date: 'Sunday, September 13 at 12:00 PM',
     where: 'Waterloo',
     target: 60,
-    by: 'Peter Lian',
+    by: 'Zahadad Jarif',
   },
 }
 
